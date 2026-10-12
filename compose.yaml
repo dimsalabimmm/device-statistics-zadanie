@@ -1,0 +1,32 @@
+name: device-statistics-learning
+
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: statistics
+      POSTGRES_USER: statistics
+      POSTGRES_PASSWORD: statistics
+    ports:
+      - "127.0.0.1:5434:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "statistics", "-d", "statistics"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+
+  api:
+    build: .
+    environment:
+      DATABASE_URL: postgresql://statistics:statistics@db:5432/statistics
+    ports:
+      - "127.0.0.1:8001:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:

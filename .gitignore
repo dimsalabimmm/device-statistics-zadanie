@@ -1,0 +1,16 @@
+.venv/
+.idea/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.DS_Store
+
+.env
+.env.*
+!.env.example
+
+compose.override.yaml
+
+check_db.py
+insert_izmereniya.py
+database-backup.sql
